@@ -37,6 +37,8 @@ def get_train_departures():
                 try:
                     # Convert timestamp to readable time
                     departure_time = datetime.fromtimestamp(int(departure['time']), tz=pytz.timezone('Europe/Brussels'))
+                    current_time = datetime.now(pytz.timezone('Europe/Brussels'))
+                    departure_time_diff = round((departure_time - current_time).total_seconds() / 60.0)
                     
                     # Calculate delay in minutes
                     delay_seconds = int(departure.get('delay', '0'))
@@ -59,7 +61,8 @@ def get_train_departures():
                         destination = departure['station']
                     
                     departures.append({
-                        'time': departure_time.strftime('%H:%M'),
+                        #'time': departure_time_diff.strftime('%H:%M'),
+                        'time': departure_time_diff,
                         'train': train_name,
                         'destination': destination,
                         'platform': platform,
